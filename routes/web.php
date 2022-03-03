@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use App\Models\Wine;
 
@@ -59,6 +60,89 @@ Route::get('/wines/{type}', function ($type) {
 Route::get('/wines_price_up/{price}', function ($price) {
 
     return Wine::price($price)->get();
+});
+
+Route::get('/wines_price_up/{price}', function ($price) {
+
+    return Wine::price($price)->get();
+});
+
+Route::get('/wines_query1', function () {
+
+    //Select all
+        //$users = DB::table('users')->get();
+
+    //Select where condition
+    $users = DB::table('users')->where('name', 'Delia Stamm')->first();
+    return $users;
+
+    //select where  two condition
+    /*
+    $val = DB::table('user_meta')->where([
+            'user_id'=>$this->id,
+            'name'=>$key
+        ])->first();
+    */
+    //select with alias
+    /*
+    $users = DB::table('users')
+            ->select('name', 'email as user_email')
+            ->get();
+    */
+
+    //Laravel Joins
+    /*
+            DB::table('users')
+             ->join('contacts', 'users.id', '=', 'contacts.user_id')
+             ->join('orders', 'users.id', '=', 'orders.user_id')
+             ->select('users.id', 'contacts.phone', 'orders.price')
+             ->get();
+    */
+});
+
+Route::get('/wines_query', function () {
+
+    //Select all
+        $users = DB::table('wines')->get();
+
+    return $users;
+
+});
+
+Route::get('/wines_query2/{id_category}/{name}', function ($id_category, $name) {
+
+    //select where  two condition
+    $val = DB::table('categories')->where([
+            'category_id'=>$id_category,
+            'name'=>$name
+        ])->first();
+    return $val;
+
+});
+
+Route::get('/wines_query3', function () {
+
+    //select with alias
+    $users = DB::table('users')
+            ->select('name', 'email as user_email')
+            ->get();
+
+    return $users;
+
+});
+
+Route::get('/wines_query4', function () {
+
+     //Laravel Joins
+
+     $users = DB::table('wines')
+             ->join('categories', 'wines.category_id', '=', 'categories.id')
+             ->join('countries', 'wines.country_id', '=', 'countries.id')
+             ->select('wines.name', 'categories.name', 'countries.name')
+             ->get();
+
+    return $users;
+
 });
 
 
